@@ -1,0 +1,40 @@
+{
+  "name": "studio-timer",
+  "version": "0.0.1",
+  "description": "Timer plugin for studio",
+  "author": {
+    "name": "Erich Oliveira",
+    "url": "http://ericholiveira.com"
+  },
+  "keywords": [
+    "frp",
+    "functional",
+    "reactive",
+    "programming",
+    "actor",
+    "actors",
+    "async",
+    "akka",
+    "micro-services",
+    "micro-service",
+    "micro",
+    "service",
+    "studio",
+    "timer"
+  ],
+  "licenses": [
+    "MIT"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onstagejs/studio-timer.git"
+  },
+  "main": "./index.js",
+  "scripts": {
+    "test": "grunt all"
+  },
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "studio": ">=0.9.28"
+  }
+}
