@@ -1,12 +1,40 @@
-module.exports = function(Studio){
-  var router = Studio.router;
-  var _send = router.send;
-  router.send = function(){
-    var initialTime = new Date().getTime();
-    return _send.apply(router,[].slice.call(arguments, 0)).then(function(result){
-      var finalTime = new Date().getTime();
-      console.log(finalTime - initialTime);
-      return result;
+var callCb = function(error,result,cb,initialTime,sender, receiver, message, headers){
+  var totalTime = new Date().getTime() - initialTime;
+  setImmediate(function(){
+    cb(error,{
+      time:totalTime,
+      message : {
+        sender : sender,
+        receiver : receiver,
+        message : message,
+        headers : headers
+      },
+      result: result
     });
-  }
+  });
+};
+module.exports = function(cb){
+  return function(opt){
+    opt.listenTo.onCreateActor(function(actor){
+      var _process = actor.process.bind(actor);
+      actor.process = function(body,headers,sender,receiver){
+        var initialTime = new Date().getTime();
+        var res = _process(body,headers,sender,receiver);
+        if(res.constructor.name==='Promise'){
+          return res.then(function(result){
+            callCb(null,result,cb,initialTime,sender, receiver, body, headers);
+            return result;
+          }).catch(function(err){
+            callCb(err,null,cb,initialTime,sender, receiver, body, headers);
+            throw err;
+          });
+        }else{
+          callCb(null,res,cb,initialTime,sender, receiver, body, headers);
+          return res;
+        }
+      };
+      actor.unsubscribe();
+      actor.unsubscribe = actor.stream.onValue(actor._doProcess);
+    });
+  };
 };

@@ -35,6 +35,6 @@
   },
   "readmeFilename": "README.md",
   "devDependencies": {
-    "studio": ">=0.9.28"
+    "studio": ">=0.9.29"
   }
 }
