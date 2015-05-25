@@ -13,24 +13,26 @@ var callCb = function(error,result,cb,initialTime,sender, receiver, message, hea
     });
   });
 };
-module.exports = function(cb){
+module.exports = function(cb,filter){
   return function(opt){
     opt.listenTo.onCreateActor(function(actor){
       var _process = actor.process.bind(actor);
       actor.process = function(body,headers,sender,receiver){
         var initialTime = new Date().getTime();
-        var res = _process(body,headers,sender,receiver);
-        if(res.constructor.name==='Promise'){
-          return res.then(function(result){
-            callCb(null,result,cb,initialTime,sender, receiver, body, headers);
-            return result;
-          }).catch(function(err){
-            callCb(err,null,cb,initialTime,sender, receiver, body, headers);
-            throw err;
-          });
-        }else{
-          callCb(null,res,cb,initialTime,sender, receiver, body, headers);
-          return res;
+        if(!filter || filter({sender:sender,receiver:receiver,body:body,headers:headers})){
+          var res = _process(body,headers,sender,receiver);
+          if(res.constructor.name==='Promise'){
+            return res.then(function(result){
+              callCb(null,result,cb,initialTime,sender, receiver, body, headers);
+              return result;
+            }).catch(function(err){
+              callCb(err,null,cb,initialTime,sender, receiver, body, headers);
+              throw err;
+            });
+          }else{
+            callCb(null,res,cb,initialTime,sender, receiver, body, headers);
+            return res;
+          }
         }
       };
       actor.unsubscribe();
