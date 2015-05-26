@@ -18,10 +18,10 @@ module.exports = function(cb,filter){
     opt.listenTo.onCreateActor(function(actor){
       var _process = actor.process.bind(actor);
       actor.process = function(body,headers,sender,receiver){
-        var initialTime = new Date().getTime();
         if(!filter || filter({sender:sender,receiver:receiver,body:body,headers:headers})){
+          var initialTime = new Date().getTime();
           var res = _process(body,headers,sender,receiver);
-          if(res.constructor.name==='Promise'){
+          if(res && res.constructor.name==='Promise'){
             return res.then(function(result){
               callCb(null,result,cb,initialTime,sender, receiver, body, headers);
               return result;
@@ -33,6 +33,8 @@ module.exports = function(cb,filter){
             callCb(null,res,cb,initialTime,sender, receiver, body, headers);
             return res;
           }
+        }else{
+          return _process(body,headers,sender,receiver);
         }
       };
       actor.unsubscribe();
