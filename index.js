@@ -72,7 +72,7 @@ module.exports = function(userOpt){
     userOpt = userOpt || {};
     var actor = userOpt.actor || {};
     var driver = userOpt.driver || {};
-    opt.listenTo.onCreateActor(onCreateActorListener(actor.callback,actor.filter));
-    opt.listenTo.onCreateDriver(onCreateDriverListener(driver.callback,driver.filter));
+    opt.listenTo.onCreateActor(onCreateActorListener(actor.log,actor.filter));
+    opt.listenTo.onCreateDriver(onCreateDriverListener(driver.log,driver.filter));
   };
 };
