@@ -1,8 +1,9 @@
 var callCbActor = function(error,result,cb,initialTime,sender, receiver, message, headers){
   var totalTime = new Date().getTime() - initialTime;
   setImmediate(function(){
-    cb(error,{
+    cb({
       time:totalTime,
+      error:error,
       message : {
         sender : sender,
         receiver : receiver,
@@ -42,9 +43,10 @@ var onCreateActorListener = function(cb,filter){
 var callCbDriver = function(error,result,cb,initialTime,driver){
   var totalTime = new Date().getTime() - initialTime;
   setImmediate(function(){
-    cb(error,{
+    cb({
       time:totalTime,
       driver:driver,
+      error:error,
       result: result
     });
   });
