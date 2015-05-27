@@ -69,6 +69,7 @@ var onCreateDriverListener = function(cb,filter){
 };
 module.exports = function(userOpt){
   return function(opt){
+    userOpt = userOpt || {};
     var actor = userOpt.actor || {};
     var driver = userOpt.driver || {};
     opt.listenTo.onCreateActor(onCreateActorListener(actor.callback,actor.filter));
