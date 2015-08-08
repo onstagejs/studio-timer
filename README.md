@@ -24,3 +24,6 @@ var sender = new Studio.Actor({id:'sender',process:function(){}});
 var receiver = new Studio.Actor({id:'receiver',process:function(){return 'Hello';}});
 sender.send('receiver',{});
 ```
+
+Remember since Studio uses Baconjs you can add throttle, buffer,skip or any
+transformation for your actor who is going to log the time
