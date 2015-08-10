@@ -2,7 +2,7 @@ var grunt = require("grunt");
 grunt.loadNpmTasks('grunt-contrib-watch');
 grunt.loadNpmTasks('grunt-coffeelint');
 grunt.loadNpmTasks('grunt-contrib-coffee');
-
+grunt.loadNpmTasks('grunt-release');
 grunt.initConfig({
 	coffeelint: {
 		app: ['src/**/*.coffee', '*.coffee'],
@@ -45,6 +45,3 @@ grunt.initConfig({
 grunt.registerTask("all", ["coffeelint", "coffee"]);
 grunt.registerTask("default", ["all", "watch"]);
 grunt.registerTask("prod", ["all", "release"]);
-grunt.registerTask("example:hapi", 'exec:hapi');
-grunt.registerTask("example:restify", 'exec:restify');
-grunt.registerTask("example:koa", 'exec:koa');
